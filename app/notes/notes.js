@@ -33,8 +33,8 @@ noteApp.service('NotesBackend', function($http) {
         title: note.title,
         body_html: note.body_html
       }
-    }).success(function(noteData){
-      notes = [noteData].concat(notes);
+    }).success(function(noteData) {
+      notes.unshift(noteData);
     });
   };
 
