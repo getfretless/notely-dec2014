@@ -38,6 +38,24 @@ noteApp.service('NotesBackend', function($http) {
     });
   };
 
+  this.replaceNote = function(note) {
+    for(var i=0; i < notes.length; i++) {
+      if (notes[i].id === note.id) {
+        notes[i] = note;
+      }
+    }
+  };
+
+  this.updateNote = function(note) {
+    var self = this;
+    $http.put(apiBasePath + 'notes/' + note.id, {
+      api_key: apiKey,
+      note: note
+    }).success(function(newNoteData) {
+      self.replaceNote(newNoteData);
+    })
+  };
+
 });
 
 noteApp.controller('NotesController', function($scope, $http, NotesBackend) {
@@ -60,12 +78,20 @@ noteApp.controller('NotesController', function($scope, $http, NotesBackend) {
     }
   };
 
+  $scope.cloneNote = function(note) {
+    return JSON.parse(JSON.stringify(note));
+  };
+
   $scope.loadNote = function(noteId) {
-    $scope.note = this.findNote(noteId);
+    $scope.note = this.cloneNote(this.findNote(noteId));
   };
 
   $scope.commit = function() {
-    NotesBackend.postNote($scope.note);
+    if ($scope.note && $scope.note.id) {
+      NotesBackend.updateNote($scope.note);
+    } else {
+      NotesBackend.postNote($scope.note);
+    }
   };
 
 });
