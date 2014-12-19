@@ -13,7 +13,7 @@ var app = angular.module('myApp', [
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/notes'});
+  $routeProvider.otherwise({redirectTo: '/login'});
 }]);
 
 // <input focus-on="noteCleared">
@@ -41,7 +41,13 @@ app.service('NotesBackend', function($http, $cookies) {
     return user;
   };
 
-  this.fetchUser = function(user) {
+  this.deleteCookie = function() {
+    delete $cookies.user;
+    user = {};
+    notes = [];
+  };
+
+  this.fetchUser = function(user, callback) {
     // /api/v1/session (expecting { "user": { "username": "dave", "password": "something" } } as POST)
     var self = this;
     $http.post(apiBasePath + 'session', {
@@ -50,10 +56,13 @@ app.service('NotesBackend', function($http, $cookies) {
         password: user.password
       }
     }).success(function(userData) {
-      user = userData;
-      // '{"username":"djones", ..}'
-      $cookies.user = JSON.stringify(user);
-      self.fetchNotes();
+      if (userData.id) {
+        user = userData;
+        // '{"username":"djones", ..}'
+        $cookies.user = JSON.stringify(user);
+        self.fetchNotes();
+        callback();
+      }
     });
   };
 

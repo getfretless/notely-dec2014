@@ -9,8 +9,11 @@ angular.module('myApp.login', ['ngRoute'])
   });
 }])
 
-.controller('LoginController', ['$scope', 'NotesBackend', function($scope, NotesBackend) {
+.controller('LoginController', ['$scope', '$location', 'NotesBackend', function($scope, $location, NotesBackend) {
   $scope.submit = function() {
-    NotesBackend.fetchUser($scope.user);
+    NotesBackend.fetchUser($scope.user, function() {
+      // NotesBackend.fetchNotes();
+      $location.path('notes'); // sends to /#/notes
+    });
   };
 }]);

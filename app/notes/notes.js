@@ -9,12 +9,17 @@ noteApp.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
-noteApp.controller('NotesController', function($scope, NotesBackend) {
+noteApp.controller('NotesController', function($scope, $location, NotesBackend) {
 
   NotesBackend.fetchNotes();
 
   $scope.user = function() {
     return NotesBackend.getUser();
+  };
+
+  $scope.logout = function() {
+    NotesBackend.deleteCookie();
+    $location.path('login');
   };
 
   $scope.buttonText = function(note) {
@@ -40,6 +45,10 @@ noteApp.controller('NotesController', function($scope, NotesBackend) {
         return notes[i];
       }
     }
+  };
+
+  $scope.goToSignIn = function() {
+    $location.path('login');
   };
 
   $scope.cloneNote = function(note) {
