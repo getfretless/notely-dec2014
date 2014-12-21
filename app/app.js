@@ -29,7 +29,6 @@ app.service('NotesBackend', function($http, $cookies) {
 
   var apiBasePath = 'https://elevennote-nov-2014.herokuapp.com/api/v1/';
   var postNotePath = apiBasePath + 'notes';
-  // var user.api_key = '$2a$10$Z96eCeXE/kPt/l1Yuvg5xuJr1MArnxV33yJ2z0hjBcVZZCiJtHwZa';
   var notes = [];
   var user = $cookies.user ? JSON.parse($cookies.user) : {};
 
