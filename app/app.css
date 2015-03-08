@@ -106,3 +106,7 @@ span.login {
 
 .ta-editor {
   margin-top: 0.4em; }
+
+.error {
+  color: red;
+  font-weight: bold; }

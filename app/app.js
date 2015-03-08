@@ -55,13 +55,13 @@ app.service('NotesBackend', function($http, $cookies) {
         password: user.password
       }
     }).success(function(userData) {
+      user = userData;
       if (userData.id) {
-        user = userData;
         // '{"username":"djones", ..}'
         $cookies.user = JSON.stringify(user);
         self.fetchNotes();
-        callback();
       }
+      callback(userData);
     });
   };
 
